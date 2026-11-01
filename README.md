@@ -1,4 +1,4 @@
-# Portfolio — Đắc Thúy Phương
+# Portfolio — Nguyễn Đắc Thúy Phương
 
 Personal portfolio website của **Nguyễn Đắc Thúy Phương** — Product Designer (UI/UX) với hơn 4 năm kinh nghiệm thiết kế giao diện và trải nghiệm người dùng đa nền tảng.
 
