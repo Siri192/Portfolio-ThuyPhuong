@@ -143,7 +143,8 @@ section{scroll-margin-top:96px}
 .sec-sub{color:var(--muted);margin-top:.6rem;font-weight:300;font-size:1rem}
 
 /* ============ PROJECTS / COVERFLOW ============ */
-.pf-info{text-align:center;min-height:96px;margin-bottom:6px}
+.pf-info{text-align:center;min-height:118px;margin-bottom:6px}
+.pf-hint{color:var(--faint);font-size:.85rem;font-weight:300;margin-top:12px}
 .pf-tag{
   display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   padding:5px 14px;border-radius:999px;border:1px solid var(--line);color:var(--muted);
@@ -170,7 +171,19 @@ section{scroll-margin-top:96px}
 }
 .card-img{width:100%;height:100%;object-fit:cover;display:block}
 .slide:not(.active) .card{filter:saturate(.82) brightness(.9)}
-.slide.active .card{box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 48px color-mix(in srgb,var(--c) 45%,transparent),inset 0 1px 0 rgba(255,255,255,.12)}
+.slide.active .card{box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 48px color-mix(in srgb,var(--c) 45%,transparent),inset 0 1px 0 rgba(255,255,255,.12);
+  transition:transform .4s cubic-bezier(.22,.61,.36,1),box-shadow .4s,filter .4s}
+.slide.active{cursor:pointer}
+/* hover arrow button (matches Figma card hover variant) */
+.card-arrow{position:absolute;right:16px;bottom:16px;width:54px;height:54px;border-radius:50%;
+  background:#fff;display:grid;place-items:center;opacity:0;transform:translateY(12px) scale(.8);
+  transition:opacity .4s cubic-bezier(.22,.61,.36,1),transform .4s cubic-bezier(.22,.61,.36,1);
+  box-shadow:0 10px 26px rgba(0,0,0,.4);pointer-events:none;z-index:3}
+.card-arrow svg{width:23px;height:23px;color:#0a0e20}
+.slide.active:hover .card{transform:translateY(-8px) scale(1.025);
+  box-shadow:0 40px 90px rgba(0,0,0,.65),0 0 64px color-mix(in srgb,var(--c) 60%,transparent),inset 0 1px 0 rgba(255,255,255,.16)}
+.slide.active:hover .card-arrow{opacity:1;transform:translateY(0) scale(1)}
+@media (prefers-reduced-motion:reduce){.slide.active:hover .card{transform:none}}
 
 .pf-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px}
 .pf-btn{
@@ -317,6 +330,7 @@ section{scroll-margin-top:96px}
     <div class="pf-info">
       <span class="pf-tag" id="pfTag"></span>
       <h3 class="pf-name" id="pfName"></h3>
+      <p class="pf-hint">Nhấp vào card ở giữa để mở dự án</p>
     </div>
   </div>
   <div class="stage" id="stage">
@@ -461,12 +475,12 @@ section{scroll-margin-top:96px}
 
   /* ---------- PROJECT DATA ---------- */
   var projects = [
-    {name:"9Proxy Platform",      tag:"Web & App",       c:"#3a86ff", img:IMG[0]},
-    {name:"NewsNooks",            tag:"Mobile App",      c:"#22d3ee", img:IMG[1]},
-    {name:"MeUp Senior Launcher", tag:"AI Launcher",     c:"#8b5cff", img:IMG[2]},
-    {name:"JoyStar Kids",         tag:"Launcher & Apps", c:"#ffb020", img:IMG[3]},
-    {name:"Game Titan",           tag:"Web Page",        c:"#22c55e", img:IMG[4]},
-    {name:"SPlayer",              tag:"Mobile App",      c:"#ff4d9d", img:IMG[5]}
+    {name:"9Proxy Platform",      tag:"Web & App",       c:"#3a86ff", img:IMG[0], slug:"9proxy-project"},
+    {name:"NewsNooks",            tag:"Mobile App",      c:"#22d3ee", img:IMG[1], slug:"newsnooks-project"},
+    {name:"MeUp Senior Launcher", tag:"AI Launcher",     c:"#8b5cff", img:IMG[2], slug:"meup-project"},
+    {name:"JoyStar Kids",         tag:"Launcher & Apps", c:"#ffb020", img:IMG[3], slug:"joystar-project"},
+    {name:"Game Titan",           tag:"Web Page",        c:"#22c55e", img:IMG[4], slug:"titan-project"},
+    {name:"SPlayer",              tag:"Mobile App",      c:"#ff4d9d", img:IMG[5], slug:"splayer-project"}
   ];
 
   var track = document.getElementById("track");
@@ -490,8 +504,15 @@ section{scroll-margin-top:96px}
     var card = document.createElement("div");
     card.className = "card";
     card.appendChild(img);
+    var arrow = document.createElement("div");
+    arrow.className = "card-arrow";
+    arrow.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
+    card.appendChild(arrow);
     el.appendChild(card);
-    el.addEventListener("click", function(){ if(i!==active){ go(i); } });
+    el.addEventListener("click", function(){
+      if(i===active){ window.location.href = projects[i].slug + ".html"; }
+      else { go(i); }
+    });
     track.appendChild(el);
     slides.push(el);
 
@@ -531,7 +552,7 @@ section{scroll-margin-top:96px}
       el.style.opacity = String(1 - abs*0.24);
       el.style.filter = abs ? "blur("+(abs*1.1)+"px)" : "none";
       el.style.zIndex = String(100 - abs);
-      el.style.pointerEvents = abs ? "auto" : "none";
+      el.style.pointerEvents = "auto";
       el.classList.toggle("active", rel === 0);
     });
     var p = projects[active];
