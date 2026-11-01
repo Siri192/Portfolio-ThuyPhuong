@@ -461,7 +461,7 @@ section{scroll-margin-top:96px}
 
   /* ---------- PROJECT DATA ---------- */
   var projects = [
-    {name:"9Proxy Platform",      tag:"Web & App",       c:"#3a86ff", img:IMG[0]},
+    {name:"9Proxy Platform",      tag:"Web & App",       c:"#3a86ff", img:IMG[0], href:"9proxy-project.html"},
     {name:"NewsNooks",            tag:"Mobile App",      c:"#22d3ee", img:IMG[1]},
     {name:"MeUp Senior Launcher", tag:"AI Launcher",     c:"#8b5cff", img:IMG[2]},
     {name:"JoyStar Kids",         tag:"Launcher & Apps", c:"#ffb020", img:IMG[3]},
@@ -479,7 +479,8 @@ section{scroll-margin-top:96px}
     var el = document.createElement("div");
     el.className = "slide";
     el.style.setProperty("--c", p.c);
-    el.setAttribute("role","button");
+    el.setAttribute("role", p.href ? "link" : "button");
+    el.tabIndex = 0;
     el.setAttribute("aria-label", p.name);
     var img = document.createElement("img");
     img.className = "card-img";
@@ -491,7 +492,18 @@ section{scroll-margin-top:96px}
     card.className = "card";
     card.appendChild(img);
     el.appendChild(card);
-    el.addEventListener("click", function(){ if(i!==active){ go(i); } });
+    el.addEventListener("click", function(){
+      if(moved) return;
+      if(i!==active){ go(i); hold(); }
+      else if(p.href){ window.location.href = p.href; }
+    });
+    el.addEventListener("keydown", function(e){
+      if(e.key==="Enter" || e.key===" "){
+        e.preventDefault();
+        if(i!==active){ go(i); hold(); }
+        else if(p.href){ window.location.href = p.href; }
+      }
+    });
     track.appendChild(el);
     slides.push(el);
 
@@ -531,7 +543,7 @@ section{scroll-margin-top:96px}
       el.style.opacity = String(1 - abs*0.24);
       el.style.filter = abs ? "blur("+(abs*1.1)+"px)" : "none";
       el.style.zIndex = String(100 - abs);
-      el.style.pointerEvents = abs ? "auto" : "none";
+      el.style.pointerEvents = "auto";
       el.classList.toggle("active", rel === 0);
     });
     var p = projects[active];
