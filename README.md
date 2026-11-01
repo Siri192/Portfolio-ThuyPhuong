@@ -1,6 +1,6 @@
 # Portfolio — Đắc Thúy Phương
 
-Personal portfolio website của **Đắc Thúy Phương** — Product Designer (UI/UX) với hơn 4 năm kinh nghiệm thiết kế giao diện và trải nghiệm người dùng đa nền tảng.
+Personal portfolio website của **Nguyễn Đắc Thúy Phương** — Product Designer (UI/UX) với hơn 4 năm kinh nghiệm thiết kế giao diện và trải nghiệm người dùng đa nền tảng.
 
 🔗 **Live site:** https://portfolio-thuyphuong-git-main-thuy-phuong.vercel.app
 📄 **CV:** https://drive.google.com/drive/folders/1BgQAf_gGInA7zMevKh2ReLKii9LocoNB
